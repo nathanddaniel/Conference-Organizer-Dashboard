@@ -3,9 +3,10 @@
 <head>
     <meta charset="utf-8">
     <title>Attendee Lists</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Inter', sans-serif;
             margin: 40px;
             background-color: #f4f4f4;
         }
@@ -85,7 +86,7 @@
         text-decoration: none;
         border-radius: 5px;
         font-weight: bold;
-    ">↩️ Go Home</a>
+    ">Go Back</a>
 </p>
 
 </body>

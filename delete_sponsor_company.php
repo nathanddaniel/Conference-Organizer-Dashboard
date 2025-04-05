@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Add Sponsor Company</title>
+    <title>Delete Sponsoring Company</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
@@ -32,47 +32,38 @@
 
 <?php include 'connectdb.php'; ?>
 
-<h1>Add a New Sponsoring Company</h1>
+<h1>Delete a Sponsoring Company</h1>
 
-<form action="add_sponsor_company.php" method="post">
-    <label>Company Name:</label>
-    <input type="text" name="company_name" required>
-
-    <label>Sponsorship Level:</label>
-    <select name="sponsorship_level" required>
-        <option value="">--Select a level--</option>
-        <option value="Platinum">Platinum</option>
-        <option value="Gold">Gold</option>
-        <option value="Silver">Silver</option>
-        <option value="Bronze">Bronze</option>
+<form method="post" action="delete_sponsor_company.php">
+    <label>Select a company to delete:</label>
+    <select name="company_name" required>
+        <option value="" disabled selected>-- Select a company --</option>
+        <?php
+        $query = "SELECT company_name FROM Company ORDER BY company_name";
+        $result = $connection->query($query);
+        while ($row = $result->fetch()) {
+            $name = htmlspecialchars($row["company_name"]);
+            echo "<option value=\"$name\">$name</option>";
+        }
+        ?>
     </select>
 
-    <label>Emails Sent (optional):</label>
-    <input type="number" name="emails_sent" min="0">
-
-    <input type="submit" value="Add Company">
+    <input type="submit" value="Delete Sponsoring Company">
 </form>
 
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["company_name"])) {
     $company = $_POST["company_name"];
-    $level = $_POST["sponsorship_level"];
-    $emails = $_POST["emails_sent"];
-
-    $emails = ($emails === "") ? null : intval($emails);
 
     try {
-        $query = "INSERT INTO Company (company_name, emails_sent, sponsorship_level)
-                  VALUES (:name, :emails, :level)";
+        $query = "DELETE FROM Company WHERE company_name = :company";
         $stmt = $connection->prepare($query);
-        $stmt->bindParam(':name', $company);
-        $stmt->bindParam(':emails', $emails);
-        $stmt->bindParam(':level', $level);
+        $stmt->bindParam(':company', $company);
         $stmt->execute();
 
-        echo "<p> Company <strong>$company</strong> added successfully!</p>";
+        echo "<p> Successfully deleted <strong>$company</strong> and its associated attendees.</p>";
     } catch (PDOException $e) {
-        echo "<p style='color:red;'> Error: " . $e->getMessage() . "</p>";
+        echo "<p style='color: red;'> Error: " . $e->getMessage() . "</p>";
     }
 }
 $connection = null;

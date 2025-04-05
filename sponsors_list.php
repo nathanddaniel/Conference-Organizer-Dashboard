@@ -59,7 +59,7 @@ $connection = null;
         text-decoration: none;
         border-radius: 5px;
         font-weight: bold;
-    ">↩️ Go Home</a>
+    "> Go Back</a>
 </p>
 
 </body>

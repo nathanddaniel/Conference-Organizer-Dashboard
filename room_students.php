@@ -33,6 +33,21 @@
             padding: 8px 16px;
             font-size: 16px;
         }
+
+        ul {
+            background-color: white;
+            padding: 35px;
+            border-radius: 8px;
+            max-width: 600px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            list-style-type: disc;
+            margin-top: 20px;
+            margin-left: 0px;
+        }
+        li {
+            padding: 6px 0;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -47,7 +62,6 @@
         <option value="" disabled selected>Select one</option>
 
         <?php
-        // Populate dropdown with room numbers
         $query = "SELECT num FROM Room ORDER BY num";
         $result = $connection->query($query);
         while ($row = $result->fetch()) {
@@ -74,11 +88,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["room_num"])) {
     $stmt->execute();
 
     if ($stmt->rowCount() > 0) {
-        echo "<table><tr><th>Student ID</th><th>First Name</th><th>Last Name</th></tr>";
+        echo "<ul>";
         while ($row = $stmt->fetch()) {
-            echo "<tr><td>{$row['attendee_id']}</td><td>{$row['fname']}</td><td>{$row['lname']}</td></tr>";
+            echo "<li>{$row['fname']} {$row['lname']}</li>";
         }
-        echo "</table>";
+        echo "</ul>";
     } else {
         echo "<p>No students found in this room.</p>";
     }
@@ -95,7 +109,7 @@ $connection = null;
         text-decoration: none;
         border-radius: 5px;
         font-weight: bold;
-    ">↩️ Go Home</a>
+    ">Go Back</a>
 </p>
 
 </body>

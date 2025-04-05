@@ -47,7 +47,6 @@
         <option value="" disabled selected>Select one</option>
 
         <?php
-        // Get all companies for the dropdown
         $query = "SELECT company_name FROM Company ORDER BY company_name";
         $result = $connection->query($query);
         while ($row = $result->fetch()) {
@@ -56,15 +55,14 @@
         }
         ?>
     </select><br><br>
-
     <input type="submit" name="view_company_jobs" value="View Jobs">
     <input type="submit" name="view_all_jobs" value="List All Jobs">
 </form>
 
 <?php
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["view_company_jobs"]) && !empty($_POST["company_name"])) {
-        // Handle company-specific job listings
         $company = $_POST["company_name"];
         echo "<h2>Jobs at $company</h2>";
 
@@ -75,8 +73,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $connection->prepare($query);
         $stmt->bindParam(':company', $company);
         $stmt->execute();
+
     } elseif (isset($_POST["view_all_jobs"])) {
-        // Handle listing all jobs
         echo "<h2>All Available Jobs</h2>";
 
         $query = 'SELECT title, salary, job_location, company_name 
@@ -119,7 +117,7 @@ $connection = null;
         text-decoration: none;
         border-radius: 5px;
         font-weight: bold;
-    ">↩️ Go Home</a>
+    ">Go Back</a>
 </p>
 
 </body>

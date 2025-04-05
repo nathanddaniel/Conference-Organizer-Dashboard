@@ -47,7 +47,6 @@
         <option value="" disabled selected>Select a date</option>
 
         <?php
-        // Get unique dates from ConferenceSession table
         $query = "SELECT DISTINCT session_date FROM ConferenceSession ORDER BY session_date";
         $result = $connection->query($query);
         while ($row = $result->fetch()) {
@@ -85,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["session_date"])) {
         }
         echo "</table>";
     } else {
-        echo "<p>No sessions scheduled for this date.</p>";
+        echo "<p>There are no sessions that have been scheduled for this date.</p>";
     }
 }
 $connection = null;
@@ -100,7 +99,7 @@ $connection = null;
         text-decoration: none;
         border-radius: 5px;
         font-weight: bold;
-    ">↩️ Go Home</a>
+    ">Go Home</a>
 </p>
 
 </body>

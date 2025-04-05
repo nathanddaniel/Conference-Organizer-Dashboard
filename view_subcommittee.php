@@ -1,12 +1,12 @@
-<!-- view_subcommittee.php -->
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <title>View Subcommittee Members</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Inter', sans-serif;
             margin: 40px;
             background-color: #f4f4f4;
         }
@@ -33,14 +33,28 @@
             margin-top: 15px;
             padding: 8px 16px;
             font-size: 16px;
+            font-family: inherit;
+        }
+
+        ul {
+            background-color: white;
+            padding: 35px;
+            border-radius: 8px;
+            max-width: 600px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            list-style-type: disc;
+            margin-top: 20px;
+            margin-left: 0px;
+        }
+        li {
+            padding: 6px 0;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
 
-<?php
-include 'connectdb.php';
-?>
+<?php include 'connectdb.php'; ?>
 
 <h1>Select a Subcommittee</h1>
 
@@ -50,7 +64,6 @@ include 'connectdb.php';
         <option value="" disabled selected>Select one</option>
 
         <?php
-        // Populate dropdown menu from database
         $query = "SELECT subcommittee_name FROM Subcommittee ORDER BY subcommittee_name";
         $result = $connection->query($query);
         while ($row = $result->fetch()) {
@@ -62,11 +75,11 @@ include 'connectdb.php';
 </form>
 
 <?php
-// If a subcommittee has been selected and submitted
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["subcommittee_name"])) {
     $selected = $_POST["subcommittee_name"];
 
-    echo "<h2>Members of '$selected'</h2>";
+    echo "<h2>Members of $selected </h2>";
 
     $query = 'SELECT Member.fname, Member.lname 
               FROM Member
@@ -78,13 +91,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["subcommittee_name"])) 
     $stmt->execute();
 
     if ($stmt->rowCount() > 0) {
-        echo "<table><tr><th>First Name</th><th>Last Name</th></tr>";
+        echo "<ul>";
         while ($row = $stmt->fetch()) {
-            echo "<tr><td>{$row['fname']}</td><td>{$row['lname']}</td></tr>";
+            $fullName = $row['fname'] . ' ' . $row['lname'];
+            echo "<li>$fullName</li>";
         }
-        echo "</table>";
+        echo "</ul>";
     } else {
-        echo "<p>No members found for this subcommittee.</p>";
+        echo "<p>There are no members found for this subcommittee.</p>";
     }
 }
 $connection = null;
@@ -99,7 +113,7 @@ $connection = null;
         text-decoration: none;
         border-radius: 5px;
         font-weight: bold;
-    ">↩️ Go Home</a>
+    ">Go Back</a>
 </p>
 
 </body>
